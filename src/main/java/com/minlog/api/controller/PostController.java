@@ -1,5 +1,6 @@
 package com.minlog.api.controller;
 
+import com.minlog.api.domain.Post;
 import com.minlog.api.request.PostCreate;
 import com.minlog.api.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,13 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/posts")
-    public Map<String, String> post(@RequestBody @Valid PostCreate request) {
+    public void post(@RequestBody @Valid PostCreate request) {
         postService.write(request);
-        return Map.of();
+    }
+
+    @GetMapping("/posts/{postId}")
+    public Post get(@PathVariable(name = "postId") Long id) {
+        Post post = postService.get(id);
+        return post;
     }
 }
