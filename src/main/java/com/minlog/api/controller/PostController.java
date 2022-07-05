@@ -2,6 +2,7 @@ package com.minlog.api.controller;
 
 import com.minlog.api.domain.Post;
 import com.minlog.api.request.PostCreate;
+import com.minlog.api.response.PostResponse;
 import com.minlog.api.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +28,8 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public Post get(@PathVariable(name = "postId") Long id) {
-        Post post = postService.get(id);
-        return post;
+    public PostResponse get(@PathVariable(name = "postId") Long id) {
+        PostResponse response = postService.get(id);
+        return response;
     }
 }
