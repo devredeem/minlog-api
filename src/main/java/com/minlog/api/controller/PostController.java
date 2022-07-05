@@ -28,8 +28,12 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public PostResponse get(@PathVariable(name = "postId") Long id) {
-        PostResponse response = postService.get(id);
-        return response;
+    public PostResponse get(@PathVariable Long postId) {
+        return postService.get(postId);
+    }
+
+    @GetMapping("/posts")
+    public List<PostResponse> getList() {
+        return postService.getList();
     }
 }
