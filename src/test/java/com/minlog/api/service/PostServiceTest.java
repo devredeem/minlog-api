@@ -3,6 +3,7 @@ package com.minlog.api.service;
 import com.minlog.api.domain.Post;
 import com.minlog.api.repository.PostRepository;
 import com.minlog.api.request.PostCreate;
+import com.minlog.api.request.PostEdit;
 import com.minlog.api.request.PostSearch;
 import com.minlog.api.response.PostResponse;
 import org.junit.jupiter.api.Assertions;
@@ -99,5 +100,53 @@ class PostServiceTest {
         // then
         assertEquals(10L, posts.size());
         assertEquals("민로그 제목 19", posts.get(0).getTitle());
+    }
+
+    @Test
+    @DisplayName("글 제목 수정")
+    void test4() {
+        // given
+        Post post = Post.builder()
+                .title("하이루")
+                .content("아서포")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("굿바이")
+                .content("아서포")
+                .build();
+
+        // when
+        postService.edit(post.getId(), postEdit);
+
+        // then
+        Post changedPost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id=" + post.getId()));
+        Assertions.assertEquals("굿바이", changedPost.getTitle());
+    }
+
+    @Test
+    @DisplayName("글 내용 수정")
+    void test5() {
+        // given
+        Post post = Post.builder()
+                .title("하이루")
+                .content("아서포")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("굿바이")
+                .content("굴다리")
+                .build();
+
+        // when
+        postService.edit(post.getId(), postEdit);
+
+        // then
+        Post changedPost = postRepository.findById(post.getId())
+                .orElseThrow(() -> new RuntimeException("글이 존재하지 않습니다. id=" + post.getId()));
+        Assertions.assertEquals("굴다리", changedPost.getContent());
     }
 }
