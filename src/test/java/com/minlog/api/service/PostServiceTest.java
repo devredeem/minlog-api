@@ -1,6 +1,7 @@
 package com.minlog.api.service;
 
 import com.minlog.api.domain.Post;
+import com.minlog.api.exception.PostNotFound;
 import com.minlog.api.repository.PostRepository;
 import com.minlog.api.request.PostCreate;
 import com.minlog.api.request.PostEdit;
@@ -165,5 +166,58 @@ class PostServiceTest {
 
         // then
         Assertions.assertEquals(0, postRepository.count());
+    }
+
+    @Test
+    @DisplayName("글 1개 조회 - 존재하지 않는 글 예외처리")
+    void test7() {
+        // given
+        Post post = Post.builder()
+                .title("하이루")
+                .content("아서포")
+                .build();
+        postRepository.save(post);
+
+        // expected
+        Assertions.assertThrows(PostNotFound.class, () -> {
+            postService.get(post.getId() + 1L);
+        });
+    }
+
+    @Test
+    @DisplayName("게시글 삭제 - 존재하지 않는 글 예외처리")
+    void test8() {
+        // given
+        Post post = Post.builder()
+                .title("하이루")
+                .content("아서포")
+                .build();
+        postRepository.save(post);
+
+        // expected
+        Assertions.assertThrows(PostNotFound.class, () -> {
+            postService.delete(post.getId() + 1L);
+        });
+    }
+
+    @Test
+    @DisplayName("글 내용 수정 - 존재하지 않는 글 예외처리")
+    void test9() {
+        // given
+        Post post = Post.builder()
+                .title("하이루")
+                .content("아서포")
+                .build();
+        postRepository.save(post);
+
+        PostEdit postEdit = PostEdit.builder()
+                .title("굿바이")
+                .content("굴다리")
+                .build();
+
+        // expected
+        Assertions.assertThrows(PostNotFound.class, () -> {
+            postService.edit(post.getId() + 1L, postEdit);
+        });
     }
 }

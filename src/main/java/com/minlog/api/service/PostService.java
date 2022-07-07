@@ -2,6 +2,7 @@ package com.minlog.api.service;
 
 import com.minlog.api.domain.Post;
 import com.minlog.api.domain.PostEditor;
+import com.minlog.api.exception.PostNotFound;
 import com.minlog.api.repository.PostRepository;
 import com.minlog.api.request.PostCreate;
 import com.minlog.api.request.PostEdit;
@@ -36,7 +37,7 @@ public class PostService {
 
     public PostResponse get(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+                .orElseThrow(() -> new PostNotFound());
 
         return PostResponse.builder()
                 .id(post.getId())
@@ -55,7 +56,7 @@ public class PostService {
     @Transactional
     public void edit(Long id, PostEdit postEdit) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+                .orElseThrow(() -> new PostNotFound());
 
         PostEditor.PostEditorBuilder editorBuilder = post.toEditor();
 
@@ -68,7 +69,7 @@ public class PostService {
 
     public void delete(Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 글입니다."));
+                .orElseThrow(() -> new PostNotFound());
 
         postRepository.delete(post);
     }
