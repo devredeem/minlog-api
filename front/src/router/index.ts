@@ -29,6 +29,12 @@ const router = createRouter({
       component: EditView,
       props: true,
     },
+    {
+      path: "/delete:postId",
+      name: "delete",
+      component: ReadView,
+      props: true,
+    },
   ],
 });
 

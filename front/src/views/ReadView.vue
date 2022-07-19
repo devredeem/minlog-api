@@ -18,6 +18,14 @@ const post = ref({
 
 const router = useRouter();
 
+const clickToDelete = function() {
+  axios.delete(`/api/posts/${props.postId}`)
+    .then(() => {
+      alert("게시글이 삭제되었습니다.")
+      router.replace({ name: "home" });
+  });
+}
+
 const moveToEdit = () => {
   router.push({name: "edit", params: { postId: props.postId } });
 }
@@ -50,6 +58,7 @@ onMounted(() => {
   <el-row class="mt-3">
     <el-col>
       <div class="d-flex justify-content-end">
+        <el-button type="danger" @click="clickToDelete()">삭제</el-button>
         <el-button type="warning" @click="moveToEdit()">수정</el-button>
       </div>
     </el-col>
